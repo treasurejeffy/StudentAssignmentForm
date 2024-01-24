@@ -29,16 +29,14 @@ export default function Assignment() {
         let updateJsonFile =[...jsonAssign,saveData] 
         if (saveData === undefined || regNos === undefined || links === undefined) {
             setAssignImg(assignImg);
-          } else {
+          } else if (links){
                 // Setting a value in sessionStorage
             sessionStorage.setItem('key', JSON.stringify(updateJsonFile));
             setJsonAssign(updateJsonFile);
             setAssignImg(done);
         }
-    }
-    if (jsonAssign === undefined) {
-        
-    }
+    }  
+    
     console.log(jsonAssign)
 
     return(

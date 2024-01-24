@@ -18,7 +18,7 @@ export default function Assignment() {
     const [assignImg,setAssignImg]=useState('https://www.jotform.com/uploads/waltermiller/form_files/Untitled%20design%20-%202022-04-21T113911.850.626118700256a5.78403891.png');
     const [done,setDone] =useState('https://www.freeiconspng.com/thumbs/check-mark-png/green-check-mark-2-icon-17.png');
     const [checkBox, setCheckBox] = useState('');
-    const notify = () => toast("successful Submition!");
+    let notify;
 
     let topic;
 
@@ -34,6 +34,8 @@ export default function Assignment() {
             sessionStorage.setItem('key', JSON.stringify(updateJsonFile));
             setJsonAssign(updateJsonFile);
             setAssignImg(done);
+            notify= toast("successful Submition!")
+
         }
     }  
     

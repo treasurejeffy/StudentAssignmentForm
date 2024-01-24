@@ -3,30 +3,31 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Container, Form, Row, Col, InputGroup,FloatingLabel, NavLink, Alert, Modal } from "react-bootstrap";
 import Json from './assignment.json'
 import AssFormmCss from './assign.module.css'
-import ShowAssignments from "../ShowAssignment/showAssign";
 import { EyeFill, File,  } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function Assignment() {
     const [jsonAssign,setJsonAssign]=useState(Json);
-    const [validated, setValidated] = useState(false);
     const [regNos,setRegNos]=useState();
-    const [htmlTP,setHtmlTP]=useState('');
-    const [cssTP,setCssTP]=useState('');
-    const [jsTP,setJsTP]=useState('');
+    const [html_css,setHtml_css]=useState('');
+    const [js,setJs]=useState('');
+    const [projects,setProjects]=useState('');
     const [links,setLinks]=useState('');
     const [assignImg,setAssignImg]=useState('https://www.jotform.com/uploads/waltermiller/form_files/Untitled%20design%20-%202022-04-21T113911.850.626118700256a5.78403891.png');
     const [done,setDone] =useState('https://www.freeiconspng.com/thumbs/check-mark-png/green-check-mark-2-icon-17.png');
     const [checkBox, setCheckBox] = useState('');
+    const notify = () => toast("successful Submition!");
 
     let topic;
 
     const handleSubmit =(e, saveData) =>{
         e.preventDefault();   
-        topic=[cssTP,htmlTP,jsTP];
+        topic=[projects,html_css,js];
         saveData={regNos,topic,links,checkBox}
         let updateJsonFile =[...jsonAssign,saveData] 
-        if (saveData === undefined || regNos === undefined) {
+        if (saveData === undefined || regNos === undefined || links === undefined) {
             setAssignImg(assignImg);
           } else {
                 // Setting a value in sessionStorage
@@ -34,6 +35,9 @@ export default function Assignment() {
             setJsonAssign(updateJsonFile);
             setAssignImg(done);
         }
+    }
+    if (jsonAssign === undefined) {
+        
     }
     console.log(jsonAssign)
 
@@ -59,7 +63,7 @@ export default function Assignment() {
                                 controlId="floatingSelectGrid"
                                 label="HTML/CSS"
                             >
-                                <Form.Select aria-label="Floating label select example" onChange={(e)=>setHtmlTP(e.target.value)}>
+                                <Form.Select aria-label="Floating label select example" value={html_css} onChange={(e)=>{setHtml_css(e.target.value);setJs('');setProjects('')}}>
                                 <option>Open to choose topic</option>
                                 <option value="1">One</option>
                                 <option value="2">Two</option>
@@ -72,7 +76,7 @@ export default function Assignment() {
                                 controlId="floatingSelectGrid"
                                 label="JS"
                             >
-                                <Form.Select aria-label="Floating label select example" onChange={(e)=>setCssTP(e.target.value)}>
+                                <Form.Select aria-label="Floating label select example" value={js}  onChange={(e)=>{setJs(e.target.value);setHtml_css('');setProjects('')}}>
                                 <option>Open to choose topic</option>
                                 <option value="1">One</option>
                                 <option value="2">Two</option>
@@ -85,7 +89,7 @@ export default function Assignment() {
                                 controlId="floatingSelectGrid"
                                 label="Projects"
                             >
-                                <Form.Select aria-label="Floating label select example" onChange={(e)=>setJsTP(e.target.value)}>
+                                <Form.Select aria-label="Floating label select example" value={projects} onChange={(e)=>{setProjects(e.target.value);setHtml_css('');setJs('')}}>
                                 <option>Open to choose</option>
                                 <option value="1">One</option>
                                 <option value="2">Two</option>
@@ -107,11 +111,25 @@ export default function Assignment() {
                         </InputGroup>                     
                     </Row>
                     <div className={`${AssFormmCss.formDivBtn}`}>
-                        <Button  type="submit" className={`${AssFormmCss.formBtn}  py-2 btn btn-dark px-5`} ><b> SUBMIT</b></Button>
+                        <Button  type="submit" onClick={notify} className={`${AssFormmCss.formBtn}  py-2 btn btn-dark px-5`} ><b> SUBMIT</b></Button>
                           <Link to={"/ShowAssignment"}><Button className={`${AssFormmCss.formBtn} mx-3  py-2 btn btn-light px-4`}> Show Scores <EyeFill/></Button></Link>
                           
                     </div>
                 </Form>
+                <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+                />
+{/* Same as */}
+<ToastContainer />
             </Container>
         </section>
     )

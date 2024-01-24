@@ -2,11 +2,9 @@
    
     {
         "regNos":"",
-        "htmlTP":"",
-        "cssTP":"",
-        "jsTP":"",
+        "topic":["htmlTP","cssTP","jsTp"],
         "link":"",
-        "classWork":""
+        "checkBox":""
     }
 
 ]

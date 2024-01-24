@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import Assignment from './Assignment/assign';
+import RouterSwitch from './route';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Assignment />
+    <RouterSwitch />
   </React.StrictMode>
 );
 

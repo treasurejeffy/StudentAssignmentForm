@@ -121,7 +121,7 @@ export default function Assignment() {
                     {/* Form Buttons */}
                     <div className={`${AssFormmCss.formDivBtn}`}>
                         <Button type="submit" onClick={notify} className={`${AssFormmCss.formBtn} py-2 btn btn-dark px-5`} ><b> SUBMIT</b></Button>
-                        <Link to={"/ShowAssignment"}><Button className={`${AssFormmCss.formBtn} mx-3 py-2 btn btn-light px-4`}> Show Scores <EyeFill/></Button></Link>
+                        <Link to={"/ShowAssignment"}><Button className={`${AssFormmCss.formBtn} mx-3 py-2 btn btn-light px-4`}> Show Details <EyeFill/></Button></Link>
                     </div>
                 </Form>
                 {/* Toast Notification Container */}

@@ -2,7 +2,9 @@
    
     {
         "regNos":"",
-        "topic":["htmlTP","cssTP","jsTp"],
+        "html_css":"",
+        "js":"",
+        "projects":"",
         "link":"",
         "checkBox":""
     }

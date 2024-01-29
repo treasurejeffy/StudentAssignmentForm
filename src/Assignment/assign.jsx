@@ -26,8 +26,7 @@ export default function Assignment() {
     // Form submission handler
     const handleSubmit = (e, saveData) => {
         e.preventDefault();   
-        topic = [projects, html_css, js];
-        saveData = { regNos, topic, links, checkBox }
+        saveData = { regNos, projects, html_css, js, links, checkBox }
         let updateJsonFile = [...jsonAssign, saveData] 
         // Check if any of the required fields is undefined
         if (saveData === undefined || regNos === undefined || links === undefined) {
@@ -73,9 +72,9 @@ export default function Assignment() {
                             >
                                 <Form.Select aria-label="Floating label select example" value={html_css} onChange={(e) => { setHtml_css(e.target.value); setJs(''); setProjects(''); }}>
                                     <option>Open to choose topic</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                    <option value="One">One</option>
+                                    <option value="Two">Two</option>
+                                    <option value="Three">Three</option>
                                 </Form.Select>
                             </FloatingLabel>
                         </Col>
@@ -86,9 +85,9 @@ export default function Assignment() {
                             >
                                 <Form.Select aria-label="Floating label select example" value={js} onChange={(e) => { setJs(e.target.value); setHtml_css(''); setProjects(''); }}>
                                     <option>Open to choose topic</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                    <option value="One">One</option>
+                                    <option value="Two">Two</option>
+                                    <option value="Three">Three</option>
                                 </Form.Select>
                             </FloatingLabel>
                         </Col>
@@ -99,9 +98,9 @@ export default function Assignment() {
                             >
                                 <Form.Select aria-label="Floating label select example" value={projects} onChange={(e) => { setProjects(e.target.value); setHtml_css(''); setJs(''); }}>
                                     <option>Open to choose</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                    <option value="One">One</option>
+                                    <option value="Two">Two</option>
+                                    <option value="Three">Three</option>
                                 </Form.Select>
                             </FloatingLabel>
                         </Col>

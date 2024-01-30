@@ -35,7 +35,7 @@ export default function ShowAssignments() {
     return (
         <div>
             <Container>
-                <h1 className={`${ShowAssignmentsCss.header} table-responsive text-center pt-5`}>CONTINUOUS ASSESSMENTS DETAILS</h1>
+            <h1 className={`${ShowAssignmentsCss.header} table-responsive text-center pt-5`}>CONTINUOUS ASSESSMENTS DETAILS</h1>
                 {/* Render the Classwork Table */}
                 {filterData('classWork').length > 0 && (
                     <div className="table-responsive mt-5">
@@ -69,12 +69,12 @@ export default function ShowAssignments() {
                             </thead>
                             <tbody>
                                 {/* Map over the array of objects to create table rows */}
-                                {filterData('classWork','HTML/CSS').map((data, index) => {
+                                {filterData('classWork').map((data, index) => {
                                     return (
                                         <tr key={index}>
                                             <td>{data.regNos}</td>
-                                            <td className="text-center">{data.topic}</td>
-                                            <td className="text-center">{data.js}</td>
+                                            <td className="text-center">{data.topic[1]}</td>
+                                            <td className="text-center">{data.topic[2]}</td>
                                         </tr>
                                     )
                                 })}
@@ -82,11 +82,9 @@ export default function ShowAssignments() {
                         </Table>
                     </div>
                 )}
-                
-                
 
                 {/* Render the Homework Table */}
-                {filterData('HomeWork', 'html_css').length > 0 && (
+                {filterData('HomeWork').length > 0 && (
                     <div className="table-responsive mt-5">
                         <span>Homework</span>
                         <Table striped bordered hover className={`${ShowAssignmentsCss.table}`}>
@@ -118,12 +116,12 @@ export default function ShowAssignments() {
                             </thead>
                             <tbody>
                                 {/* Map over the array of objects to create table rows */}
-                                {filterData('HomeWork', 'html_css').map((data, index) => {
+                                {filterData('HomeWork').map((data, index) => {
                                     return (
                                         <tr key={index}>
                                             <td>{data.regNos}</td>
                                             <td className="text-center">{data.topic[1]}</td>
-                                            <td className="text-center">{data.topic[0]}</td>
+                                            <td className="text-center">{data.topic[2]}</td>
                                         </tr>
                                     )
                                 })}

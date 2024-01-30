@@ -2,7 +2,7 @@
    
     {
         "regNos":"",
-        "topic":"",
+        "topic":[],
         "link":"",
         "checkBox":""
     }

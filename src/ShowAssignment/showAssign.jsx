@@ -14,10 +14,9 @@ export default function ShowAssignments() {
         // Retrieve items from sessionStorage
         const storedData = sessionStorage.getItem('key');
 
-        //  Parse JSON to it
+        //  Parse JSON to set it to state
         if (storedData) {
             const parsedData = JSON.parse(storedData);
-
             // Set items to state
             setSessionStorageItems(parsedData);
         }
@@ -28,50 +27,110 @@ export default function ShowAssignments() {
 
     console.log(newArrayOfObjects);
 
+    // Function to filter data based on the type (classWork or homeWork)
+    const filterData = (type) => {
+        return newArrayOfObjects.filter(data => data.checkBox === type);
+    };
+
     return (
         <div>
             <Container>
                 <h1 className={`${ShowAssignmentsCss.header} table-responsive text-center pt-5`}>CONTINUOUS ASSESSMENTS DETAILS</h1>
-                <div className="table-responsive">
-                    <Table striped bordered hover className={`${ShowAssignmentsCss.table}`}>
-                        {/* Table header */}
-                        <thead>
-                            <tr>
-                                <th>#Reg no.</th>
-                                <th>Links</th>
-                                <th colSpan="3" className="text-center">Topics</th>
-                                <th colSpan="3" className="text-center">Assessment</th>
-                            </tr>
-                            <tr>
-                                <th scope="col"></th>
-                                <th scope="col"></th>
-                                <th scope="col">HTML/CSS</th>
-                                <th scope="col">JS</th>
-                                <th scope="col">Project</th>
-                                <th scope="col">Classworks</th>
-                                <th scope="col">Homeworks</th>
-                                <th scope="col">Projects</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {/* Map over the array of objects to create table rows */}
-                            {newArrayOfObjects.map((data, index) => {
-                                return (
-                                    <tr key={index}>
-                                        <td>{data.regNos}</td>
-                                        <td><a href={data.links}>{data.links}</a></td>
-                                        <td className="text-center">{data.html_css}</td>
-                                        <td className="text-center">{data.js}</td>
-                                        <td className="text-center">{data.projects}</td>
-                                        <td className="text-center">{data.checkBox === 'classWork' ? <img src="https://img.icons8.com/?size=48&id=sz8cPVwzLrMP&format=png" alt="passed" /> : <img src={unpassed} alt="unpassed" />}</td>
-                                        <td className="text-center">{data.checkBox === 'HomeWork' ? <img src="https://img.icons8.com/?size=48&id=sz8cPVwzLrMP&format=png" alt="passed" /> : <img src={unpassed} alt="unpassed" />}</td>
-                                        <td className="text-center">{data.checkBox === 'Projects' ? <img src="https://img.icons8.com/?size=48&id=sz8cPVwzLrMP&format=png" alt="passed" /> : <img src={unpassed} alt="unpassed" />}</td>
-                                    </tr>
-                                )
-                            })}
-                        </tbody>
-                    </Table>
-                </div>
+                {/* Render the Classwork Table */}
+                {filterData('classWork').length > 0 && (
+                    <div className="table-responsive mt-5">
+                        <span>Classwork</span>
+                        <Table striped bordered hover className={`${ShowAssignmentsCss.table}`}>
+                            {/* Table header */}
+                            <thead>
+                                <tr>
+                                    <th rowSpan={3}>#Reg no.</th>
+                                    <th colSpan={12} className="text-center">Classwork</th>
+                                </tr>
+                                <tr>
+                                    <th scope="col" colSpan={6} className="text-center">HTML/CSS</th>
+                                    <th scope="col" colSpan={6} className="text-center">JS</th>
+                                </tr>
+                                <tr>
+                                    <th scope="col">Topic 1</th>
+                                    <th scope="col">Topic 2</th>
+                                    <th scope="col">Topic 3</th>
+                                    <th scope="col">Topic 4</th>
+                                    <th scope="col">Topic 5</th>
+                                    <th scope="col">Topic 6</th>
+
+                                    <th scope="col">Topic 1</th>
+                                    <th scope="col">Topic 2</th>
+                                    <th scope="col">Topic 3</th>
+                                    <th scope="col">Topic 4</th>
+                                    <th scope="col">Topic 5</th>
+                                    <th scope="col">Topic 6</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {/* Map over the array of objects to create table rows */}
+                                {filterData('classWork','HTML/CSS').map((data, index) => {
+                                    return (
+                                        <tr key={index}>
+                                            <td>{data.regNos}</td>
+                                            <td className="text-center">{data.topic}</td>
+                                            <td className="text-center">{data.js}</td>
+                                        </tr>
+                                    )
+                                })}
+                            </tbody>
+                        </Table>
+                    </div>
+                )}
+                
+                
+
+                {/* Render the Homework Table */}
+                {filterData('HomeWork', 'html_css').length > 0 && (
+                    <div className="table-responsive mt-5">
+                        <span>Homework</span>
+                        <Table striped bordered hover className={`${ShowAssignmentsCss.table}`}>
+                            {/* Table header */}
+                            <thead>
+                                <tr>
+                                    <th rowSpan={3}>#Reg no.</th>
+                                    <th colSpan={12} className="text-center">Homework</th>
+                                </tr>
+                                <tr>
+                                    <th scope="col" colSpan={6} className="text-center">HTML/CSS</th>
+                                    <th scope="col" colSpan={6} className="text-center">JS</th>
+                                </tr>
+                                <tr>
+                                    <th scope="col">Topic 1</th>
+                                    <th scope="col">Topic 2</th>
+                                    <th scope="col">Topic 3</th>
+                                    <th scope="col">Topic 4</th>
+                                    <th scope="col">Topic 5</th>
+                                    <th scope="col">Topic 6</th>
+
+                                    <th scope="col">Topic 1</th>
+                                    <th scope="col">Topic 2</th>
+                                    <th scope="col">Topic 3</th>
+                                    <th scope="col">Topic 4</th>
+                                    <th scope="col">Topic 5</th>
+                                    <th scope="col">Topic 6</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {/* Map over the array of objects to create table rows */}
+                                {filterData('HomeWork', 'html_css').map((data, index) => {
+                                    return (
+                                        <tr key={index}>
+                                            <td>{data.regNos}</td>
+                                            <td className="text-center">{data.topic[1]}</td>
+                                            <td className="text-center">{data.topic[0]}</td>
+                                        </tr>
+                                    )
+                                })}
+                            </tbody>
+                        </Table>
+                    </div>
+                )}
             </Container>
         </div>
     )

@@ -25,28 +25,35 @@ export default function Assignment() {
 
     // Form submission handler
     const handleSubmit = (e, saveData) => {
-        e.preventDefault();   
-        saveData = { regNos, projects, html_css, js, links, checkBox }
-        let updateJsonFile = [...jsonAssign, saveData] 
-        // Check if any of the required fields is undefined
-        if (saveData === undefined || regNos === undefined || links === undefined) {
-            // If any of them is undefined, setAssignImg(assignImg)
-            setAssignImg(assignImg);
-        } else if (links) {
-            // Setting a value in sessionStorage
-            sessionStorage.setItem('key', JSON.stringify(updateJsonFile));
-            // Update state variables
-            setJsonAssign(updateJsonFile);
-            setAssignImg(done);
-            // Display a toast notification for successful submission
-            notify = toast("Successful Submission!");
+        e.preventDefault();
+
+        // Check if any of the required fields is not filled
+        if (!regNos || !links || !checkBox || (!html_css && !js && !projects)) {
+            // Display an error message
+            toast.error("Please fill in all required fields.");
+            return; // Stop further execution
         }
-    }  
+
+        topic = [projects, html_css, js];
+        saveData = { regNos, links, checkBox, topic };
+        let updateJsonFile = [...jsonAssign, saveData];
+
+        // Setting a value in sessionStorage
+        sessionStorage.setItem('key', JSON.stringify(updateJsonFile));
+        // Update state variables
+        setJsonAssign(updateJsonFile);
+        setAssignImg(done);
+        // Display a toast notification for successful submission
+        notify = toast("Successful Submission!");
+    }
+
+// ...
+
     
     console.log(jsonAssign);
 
     return (
-        <section className={`${AssFormmCss.formSection}`}>
+        <section className={`${AssFormmCss.formSection}`} >
             <Container className="py-5">
                 <div className="bg-dark px-5 py-5 d-lg-flex text-center rounded">
                     <img src={assignImg} alt="AssignmentImage" className={`${AssFormmCss.formImg}`} />
@@ -70,7 +77,7 @@ export default function Assignment() {
                                 controlId="floatingSelectGrid"
                                 label="HTML/CSS"
                             >
-                                <Form.Select aria-label="Floating label select example" value={html_css} onChange={(e) => { setHtml_css(e.target.value); setJs(''); setProjects(''); }}>
+                                <Form.Select aria-label="Floating label select example" value={html_css} onChange={(e) => { setHtml_css(e.target.value); setJs(''); setProjects(''); }} >
                                     <option>Open to choose topic</option>
                                     <option value="One">One</option>
                                     <option value="Two">Two</option>
@@ -83,7 +90,7 @@ export default function Assignment() {
                                 controlId="floatingSelectGrid"
                                 label="JS"
                             >
-                                <Form.Select aria-label="Floating label select example" value={js} onChange={(e) => { setJs(e.target.value); setHtml_css(''); setProjects(''); }}>
+                                <Form.Select aria-label="Floating label select example" value={js} onChange={(e) => { setJs(e.target.value); setHtml_css(''); setProjects(''); }} required={true}>
                                     <option>Open to choose topic</option>
                                     <option value="One">One</option>
                                     <option value="Two">Two</option>
@@ -96,7 +103,7 @@ export default function Assignment() {
                                 controlId="floatingSelectGrid"
                                 label="Projects"
                             >
-                                <Form.Select aria-label="Floating label select example" value={projects} onChange={(e) => { setProjects(e.target.value); setHtml_css(''); setJs(''); }}>
+                                <Form.Select aria-label="Floating label select example" value={projects} onChange={(e) => { setProjects(e.target.value); setHtml_css(''); setJs(''); }} disabled={true}>
                                     <option>Open to choose</option>
                                     <option value="One">One</option>
                                     <option value="Two">Two</option>
@@ -109,7 +116,7 @@ export default function Assignment() {
                     <Row>
                         <Form.Check label="ClassWork" name="ClassWork" checked={checkBox === 'classWork'} className="mx-3 mt-3" onChange={() => setCheckBox('classWork')} />
                         <Form.Check label="HomeWork" className="mx-3" name="HomeWork" checked={checkBox === 'HomeWork'} onChange={() => setCheckBox('HomeWork')} />
-                        <Form.Check label="Projects" className="mx-3 mb-3" name="Projects" checked={checkBox === 'Projects'} onChange={() => setCheckBox('Projects')} />
+                        <Form.Check label="Projects" className="mx-3 mb-3" name="Projects" checked={checkBox === 'Projects'} onChange={() => setCheckBox('Projects')} disabled={true}/>
 
                         <InputGroup className="my-3">
                             <InputGroup.Text id="basic-addon3">

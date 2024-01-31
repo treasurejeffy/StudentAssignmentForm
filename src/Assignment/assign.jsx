@@ -12,13 +12,15 @@ export default function Assignment() {
     // State variables
     const [jsonAssign, setJsonAssign] = useState(Json);
     const [regNos, setRegNos] = useState();
-    const [html_css, setHtml_css] = useState('');
-    const [js, setJs] = useState('');
+    const [html_css_CW, setHtml_css_CW] = useState('');
+    const [html_css_HW, setHtml_css_HW] = useState('');
+    const [js_CW, setJs_CW] = useState('');
+    const [js_HW, setJs_HW] = useState('');
     const [projects, setProjects] = useState('');
     const [links, setLinks] = useState('');
+    const [link, setLink] = useState('');
     const [assignImg, setAssignImg] = useState('https://www.jotform.com/uploads/waltermiller/form_files/Untitled%20design%20-%202022-04-21T113911.850.626118700256a5.78403891.png');
     const [done, setDone] = useState('https://www.freeiconspng.com/thumbs/check-mark-png/green-check-mark-2-icon-17.png');
-    const [checkBox, setCheckBox] = useState('');
     let notify;
 
     let topic;
@@ -28,14 +30,14 @@ export default function Assignment() {
         e.preventDefault();
 
         // Check if any of the required fields is not filled
-        if (!regNos || !links || !checkBox || (!html_css && !js && !projects)) {
+        if (!regNos || !((links && !link) || (!links && link))  || (!html_css_HW && !html_css_CW && !js_CW && !js_HW && !projects)) {
             // Display an error message
             toast.error("Please fill in all required fields.");
             return; // Stop further execution
         }
 
-        topic = [projects, html_css, js];
-        saveData = { regNos, links, checkBox, topic };
+        topic = [projects, html_css_CW, js_CW, html_css_HW, js_HW];
+        saveData = { regNos, ...(links ? { links } : { link }), topic };
         let updateJsonFile = [...jsonAssign, saveData];
 
         // Setting a value in sessionStorage
@@ -67,17 +69,17 @@ export default function Assignment() {
                             <Form.Label>Reg No. </Form.Label>
                             <Form.Control type="number" required onChange={(e) => setRegNos(e.target.value)} />
                             <Form.Text muted>IDENTITY NO.</Form.Text>
-                            <Form.Control.Feedback type={"invalid"}>Please fill it up</Form.Control.Feedback>
                         </Col>
                     </Row>
                     {/* Topic Selection */}
-                    <Row>
-                        <Col>
+                    <p className="text-center">Choose One(1) Assessment </p>
+                    <Row lg={2} sm={1} xs={1}>
+                        <Col className="mb-3">
                             <FloatingLabel
                                 controlId="floatingSelectGrid"
-                                label="HTML/CSS"
+                                label="HTML/CSS Classwork"
                             >
-                                <Form.Select aria-label="Floating label select example" value={html_css} onChange={(e) => { setHtml_css(e.target.value); setJs(''); setProjects(''); }} >
+                                <Form.Select aria-label="Floating label select example" value={html_css_CW} onChange={(e) => { setHtml_css_CW(e.target.value); setJs_CW(''); setJs_HW(''); setHtml_css_HW(''); setProjects(''); }} >
                                     <option>Open to choose topic</option>
                                     <option value="One">One</option>
                                     <option value="Two">Two</option>
@@ -85,12 +87,38 @@ export default function Assignment() {
                                 </Form.Select>
                             </FloatingLabel>
                         </Col>
-                        <Col>
+                        <Col className="mb-3">
                             <FloatingLabel
                                 controlId="floatingSelectGrid"
-                                label="JS"
+                                label="HTML/CSS Homework"
                             >
-                                <Form.Select aria-label="Floating label select example" value={js} onChange={(e) => { setJs(e.target.value); setHtml_css(''); setProjects(''); }} required={true}>
+                                <Form.Select aria-label="Floating label select example" value={html_css_HW} onChange={(e) => { setHtml_css_HW(e.target.value); setHtml_css_CW(''); setJs_CW(''); setJs_HW(''); setProjects(''); }} >
+                                    <option>Open to choose topic</option>
+                                    <option value="One">One</option>
+                                    <option value="Two">Two</option>
+                                    <option value="Three">Three</option>
+                                </Form.Select>
+                            </FloatingLabel>
+                        </Col>
+                        <Col className="mb-3">
+                            <FloatingLabel
+                                controlId="floatingSelectGrid"
+                                label="JS Classwork"
+                            >
+                                <Form.Select aria-label="Floating label select example" value={js_CW} onChange={(e) => { setJs_CW(e.target.value); setHtml_css_HW(''); setHtml_css_CW(''); setJs_CW(''); setJs_HW(''); setProjects(''); }} required={true}>
+                                    <option>Open to choose topic</option>
+                                    <option value="One">One</option>
+                                    <option value="Two">Two</option>
+                                    <option value="Three">Three</option>
+                                </Form.Select>
+                            </FloatingLabel>
+                        </Col>
+                        <Col className="mb-3">
+                            <FloatingLabel
+                                controlId="floatingSelectGrid"
+                                label="JS Homework"
+                            >
+                                <Form.Select aria-label="Floating label select example" value={js_HW} onChange={(e) => { setJs_HW(e.target.value); setHtml_css_CW(''); setHtml_css_HW(''); setJs_CW('');  setProjects(''); }} required={true}>
                                     <option>Open to choose topic</option>
                                     <option value="One">One</option>
                                     <option value="Two">Two</option>
@@ -103,7 +131,7 @@ export default function Assignment() {
                                 controlId="floatingSelectGrid"
                                 label="Projects"
                             >
-                                <Form.Select aria-label="Floating label select example" value={projects} onChange={(e) => { setProjects(e.target.value); setHtml_css(''); setJs(''); }} disabled={true}>
+                                <Form.Select aria-label="Floating label select example" value={projects} onChange={(e) => { setProjects(e.target.value); setHtml_css_CW(''); setHtml_css_HW(''); setJs_CW(''); setJs_HW('');}} disabled={true}>
                                     <option>Open to choose</option>
                                     <option value="One">One</option>
                                     <option value="Two">Two</option>
@@ -113,17 +141,19 @@ export default function Assignment() {
                         </Col>
                     </Row>
                     {/* Checkbox and Link Input */}
-                    <Row>
-                        <Form.Check label="ClassWork" name="ClassWork" checked={checkBox === 'classWork'} className="mx-3 mt-3" onChange={() => setCheckBox('classWork')} />
-                        <Form.Check label="HomeWork" className="mx-3" name="HomeWork" checked={checkBox === 'HomeWork'} onChange={() => setCheckBox('HomeWork')} />
-                        <Form.Check label="Projects" className="mx-3 mb-3" name="Projects" checked={checkBox === 'Projects'} onChange={() => setCheckBox('Projects')} disabled={true}/>
-
+                    <Row className="d-none d-lg-block">
                         <InputGroup className="my-3">
                             <InputGroup.Text id="basic-addon3">
                                 Link to your assessment <NavLink className="text-primary mx-1"/>:
                             </InputGroup.Text>
-                            <Form.Control type="text" required onChange={(e) => setLinks(e.target.value)} />
+                            <Form.Control type="text"  onChange={(e) => setLinks(e.target.value)} />
                         </InputGroup>
+                    </Row>
+                    <Row className="d-sm-block d-lg-none">
+                        <Form.Group>
+                            <Form.Label>Link:</Form.Label>
+                            <Form.Control onChange={(e)=> setLink(e.target.value) }/>
+                        </Form.Group>
                     </Row>
                     {/* Form Buttons */}
                     <div className={`${AssFormmCss.formDivBtn}`}>

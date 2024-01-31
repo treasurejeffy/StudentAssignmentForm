@@ -35,100 +35,33 @@ export default function ShowAssignments() {
     return (
         <div>
             <Container>
-            <h1 className={`${ShowAssignmentsCss.header} table-responsive text-center pt-5`}>CONTINUOUS ASSESSMENTS DETAILS</h1>
-                {/* Render the Classwork Table */}
-                {filterData('classWork').length > 0 && (
-                    <div className="table-responsive mt-5">
-                        <span>Classwork</span>
-                        <Table striped bordered hover className={`${ShowAssignmentsCss.table}`}>
-                            {/* Table header */}
-                            <thead>
-                                <tr>
-                                    <th rowSpan={3}>#Reg no.</th>
-                                    <th colSpan={12} className="text-center">Classwork</th>
-                                </tr>
-                                <tr>
-                                    <th scope="col" colSpan={6} className="text-center">HTML/CSS</th>
-                                    <th scope="col" colSpan={6} className="text-center">JS</th>
-                                </tr>
-                                <tr>
-                                    <th scope="col">Topic 1</th>
-                                    <th scope="col">Topic 2</th>
-                                    <th scope="col">Topic 3</th>
-                                    <th scope="col">Topic 4</th>
-                                    <th scope="col">Topic 5</th>
-                                    <th scope="col">Topic 6</th>
-
-                                    <th scope="col">Topic 1</th>
-                                    <th scope="col">Topic 2</th>
-                                    <th scope="col">Topic 3</th>
-                                    <th scope="col">Topic 4</th>
-                                    <th scope="col">Topic 5</th>
-                                    <th scope="col">Topic 6</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {/* Map over the array of objects to create table rows */}
-                                {filterData('classWork').map((data, index) => {
-                                    return (
-                                        <tr key={index}>
-                                            <td>{data.regNos}</td>
-                                            <td className="text-center">{data.topic[1]}</td>
-                                            <td className="text-center">{data.topic[2]}</td>
-                                        </tr>
-                                    )
-                                })}
-                            </tbody>
-                        </Table>
-                    </div>
-                )}
-
-                {/* Render the Homework Table */}
-                {filterData('HomeWork').length > 0 && (
-                    <div className="table-responsive mt-5">
-                        <span>Homework</span>
-                        <Table striped bordered hover className={`${ShowAssignmentsCss.table}`}>
-                            {/* Table header */}
-                            <thead>
-                                <tr>
-                                    <th rowSpan={3}>#Reg no.</th>
-                                    <th colSpan={12} className="text-center">Homework</th>
-                                </tr>
-                                <tr>
-                                    <th scope="col" colSpan={6} className="text-center">HTML/CSS</th>
-                                    <th scope="col" colSpan={6} className="text-center">JS</th>
-                                </tr>
-                                <tr>
-                                    <th scope="col">Topic 1</th>
-                                    <th scope="col">Topic 2</th>
-                                    <th scope="col">Topic 3</th>
-                                    <th scope="col">Topic 4</th>
-                                    <th scope="col">Topic 5</th>
-                                    <th scope="col">Topic 6</th>
-
-                                    <th scope="col">Topic 1</th>
-                                    <th scope="col">Topic 2</th>
-                                    <th scope="col">Topic 3</th>
-                                    <th scope="col">Topic 4</th>
-                                    <th scope="col">Topic 5</th>
-                                    <th scope="col">Topic 6</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {/* Map over the array of objects to create table rows */}
-                                {filterData('HomeWork').map((data, index) => {
-                                    return (
-                                        <tr key={index}>
-                                            <td>{data.regNos}</td>
-                                            <td className="text-center">{data.topic[1]}</td>
-                                            <td className="text-center">{data.topic[2]}</td>
-                                        </tr>
-                                    )
-                                })}
-                            </tbody>
-                        </Table>
-                    </div>
-                )}
+                <h1 className={`${ShowAssignmentsCss.header} table-responsive text-center pt-5`}>CONTINUOUS ASSESSMENTS DETAILS</h1>
+                {/* Render the Classwork Table */}            
+                <Table striped bordered hover>
+            <thead>
+                <tr>
+                    <th scope="row" > Topic 1</th>
+                </tr>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Reg No.</th>
+                    <th scope="col">Links</th>
+                    <th scope="col">Classwork</th>
+                    <th>Homework</th>
+                    {/* Add other table headers based on your data structure */}
+                </tr>                
+            </thead>
+            <tbody>
+                {newArrayOfObjects.map((item, index) => (
+                    <tr key={index}>
+                        <td>{index + 1}</td>
+                        <td>{item.regNos}</td>
+                        <td>{item.links}</td>
+                        {/* Add other table cells based on your data structure */}
+                    </tr>
+                ))}
+            </tbody>
+        </Table>
             </Container>
         </div>
     )

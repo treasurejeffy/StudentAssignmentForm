@@ -26,6 +26,12 @@ export default function Assignment() {
     let classwork;
     let Homework;
 
+    // Send data to the backend
+
+    const sendData = (regno, course_assessment, assessmentWkDay, assessmentlink)=>{
+
+    }
+
     // Form submission handler
     const handleSubmit = (e, saveData) => {
         e.preventDefault();
@@ -37,21 +43,24 @@ export default function Assignment() {
             return; // Stop further execution
         }
 
-        Homework = [ html_css_CW, js_CW];
-        classwork= [html_css_HW, js_HW]
-        saveData = { regNos, ...(links ? { links } : { link }), classwork, Homework, projects };
-        let updateJsonFile = [...jsonAssign, saveData];
+        sendData(regNos, links)
+        console.log(regNos, html_css_CW, links)
 
-        // Setting a value in sessionStorage
-        sessionStorage.setItem('key', JSON.stringify(updateJsonFile));
-        // Update state variables
-        setJsonAssign(updateJsonFile);
-        setAssignImg(done);
-        // Display a toast notification for successful submission
-        notify = toast("Successful Submission!");
+        // classwork = [ html_css_CW, js_CW];
+        // Homework= [html_css_HW, js_HW]
+        // saveData = { regNos, ...(links ? { links } : { link }), classwork, Homework, projects };
+        // let updateJsonFile = [...jsonAssign, saveData];
+
+        // // Setting a value in sessionStorage
+        // sessionStorage.setItem('key', JSON.stringify(updateJsonFile));
+        // // Update state variables
+        // setJsonAssign(updateJsonFile);
+        // setAssignImg(done);
+        // // Display a toast notification for successful submission
+        // notify = toast("Successful Submission!");
     }
     
-    console.log(jsonAssign);
+    // console.log(jsonAssign);
 
     return (
         <section className={`${AssFormmCss.formSection}`} >

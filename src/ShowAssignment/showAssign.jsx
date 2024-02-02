@@ -5,6 +5,8 @@ import { Markdown, WindowDash } from "react-bootstrap-icons";
 import ShowAssignmentsCss from './showassignment.module.css'
 import unpassed from './icons8-question-mark-48.png'
 
+// ... (your imports)
+
 export default function ShowAssignments() {
     // State to store data retrieved from sessionStorage
     const [sessionStorageItems, setSessionStorageItems] = useState([]);
@@ -29,40 +31,90 @@ export default function ShowAssignments() {
 
     // Function to filter data based on the type (classWork or homeWork)
     const filterData = (type) => {
-        return newArrayOfObjects.filter(data => data.checkBox === type);
+        return newArrayOfObjects.filter(data => data[type] && data[type].length > 0);
     };
+    
 
     return (
         <div>
             <Container>
-                <h1 className={`${ShowAssignmentsCss.header} table-responsive text-center pt-5`}>CONTINUOUS ASSESSMENTS DETAILS</h1>
-                {/* Render the Classwork Table */}            
-                <Table striped bordered hover>
-            <thead>
-                <tr>
-                    <th scope="row" > Topic 1</th>
-                </tr>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Reg No.</th>
-                    <th scope="col">Links</th>
-                    <th scope="col">Classwork</th>
-                    <th>Homework</th>
-                    {/* Add other table headers based on your data structure */}
-                </tr>                
-            </thead>
-            <tbody>
-                {newArrayOfObjects.map((item, index) => (
-                    <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{item.regNos}</td>
-                        <td>{item.links}</td>
-                        {/* Add other table cells based on your data structure */}
-                    </tr>
-                ))}
-            </tbody>
-        </Table>
+                <h1 className="text-center mt-5">Continous Assessment Details</h1>
+                {/* Render the Classwork Table */}
+                {filterData('classwork').length > 0 && (
+                <div className="table-responsive mt-5">
+                    <span>Classwork</span>
+                    <Table striped bordered hover className={`${ShowAssignmentsCss.table}`}>
+                        {/* Table header */}
+                        <thead>
+                            {/* ... (your header rows) */}
+                            <tr>
+                                <th>#</th>
+                                {filterData('classwork').some(data => data.links) && <th>Link</th>}
+                                <th>RegNo.</th>
+                                <th>HTML/CSS</th>
+                                <th>JAVASCRIPT</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {/* Map over the array of objects to create table rows */}
+                            {filterData('classwork').map((data, index) => {
+                                return (
+                                    <tr key={index}>
+                                        <td>{index + 1}</td>
+                                        {data.links && <td>{data.links}</td>}
+                                        <td>{data.regNos}</td>
+                                        {data.classwork.map((topic, topicIndex) => (
+                                            <td key={topicIndex} className="text-center">
+                                                {topicIndex < 3 ? ` ${topic || 'empty'}` : ` ${topic || 'empty'}`}
+                                            </td>
+                                        ))}
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </Table>
+                </div>
+            )}
+
+            {/* Render the Homework Table */}
+            {filterData('Homework').length > 0 && (
+                <div className="table-responsive mt-5">
+                    <span>Homework</span>
+                    <Table striped bordered hover className={`${ShowAssignmentsCss.table}`}>
+                        {/* Table header */}
+                        <thead>
+                            {/* ... (your header rows) */}
+                            <tr>
+                                <th>#</th>
+                                {filterData('Homework').some(data => data.links) && <th>Link</th>}
+                                <th>RegNo.</th>
+                                <th>HTML/CSS</th>
+                                <th>JAVASCRIPT</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {/* Map over the array of objects to create table rows */}
+                            {filterData('Homework').map((data, index) => {
+                                return (
+                                    <tr key={index}>
+                                        <td>{index + 1}</td>
+                                        {data.links && <td>{data.links}</td>}
+                                        <td>{data.regNos}</td>
+                                        {data.Homework.map((topic, topicIndex) => (
+                                            <td key={topicIndex} className="text-center">
+                                                {topicIndex < 3 ? ` ${topic || 'empty'}` : ` ${topic || 'empty'}`}
+                                            </td>
+                                        ))}
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </Table>
+                </div>
+            )}
+
             </Container>
         </div>
     )
 }
+

@@ -23,7 +23,8 @@ export default function Assignment() {
     const [done, setDone] = useState('https://www.freeiconspng.com/thumbs/check-mark-png/green-check-mark-2-icon-17.png');
     let notify;
 
-    let topic;
+    let classwork;
+    let Homework;
 
     // Form submission handler
     const handleSubmit = (e, saveData) => {
@@ -36,8 +37,9 @@ export default function Assignment() {
             return; // Stop further execution
         }
 
-        topic = [projects, html_css_CW, js_CW, html_css_HW, js_HW];
-        saveData = { regNos, ...(links ? { links } : { link }), topic };
+        Homework = [ html_css_CW, js_CW];
+        classwork= [html_css_HW, js_HW]
+        saveData = { regNos, ...(links ? { links } : { link }), classwork, Homework, projects };
         let updateJsonFile = [...jsonAssign, saveData];
 
         // Setting a value in sessionStorage
@@ -48,9 +50,6 @@ export default function Assignment() {
         // Display a toast notification for successful submission
         notify = toast("Successful Submission!");
     }
-
-// ...
-
     
     console.log(jsonAssign);
 
@@ -105,7 +104,7 @@ export default function Assignment() {
                                 controlId="floatingSelectGrid"
                                 label="JS Classwork"
                             >
-                                <Form.Select aria-label="Floating label select example" value={js_CW} onChange={(e) => { setJs_CW(e.target.value); setHtml_css_HW(''); setHtml_css_CW(''); setJs_CW(''); setJs_HW(''); setProjects(''); }} required={true}>
+                                <Form.Select aria-label="Floating label select example" value={js_CW} onChange={(e) => { setJs_CW(e.target.value); setHtml_css_HW(''); setHtml_css_CW(''); setJs_HW(''); setProjects(''); }} required={true}>
                                     <option>Open to choose topic</option>
                                     <option value="One">One</option>
                                     <option value="Two">Two</option>
@@ -131,7 +130,7 @@ export default function Assignment() {
                                 controlId="floatingSelectGrid"
                                 label="Projects"
                             >
-                                <Form.Select aria-label="Floating label select example" value={projects} onChange={(e) => { setProjects(e.target.value); setHtml_css_CW(''); setHtml_css_HW(''); setJs_CW(''); setJs_HW('');}} disabled={true}>
+                                <Form.Select aria-label="Floating label select example" value={projects} onChange={(e) => { setProjects(e.target.value); setHtml_css_CW(''); setHtml_css_HW(''); setJs_CW(''); setJs_HW('');}}>
                                     <option>Open to choose</option>
                                     <option value="One">One</option>
                                     <option value="Two">Two</option>

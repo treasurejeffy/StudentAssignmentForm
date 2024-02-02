@@ -113,6 +113,35 @@ export default function ShowAssignments() {
                 </div>
             )}
 
+             {/* Render the Homework Table */}
+            {filterData('projects').length > 0 && (
+                <div className="table-responsive mt-5">
+                    <span>projects</span>
+                    <Table striped bordered hover className={`${ShowAssignmentsCss.table}`}>
+                        {/* Table header */}
+                        <thead>
+                            {/* ... (your header rows) */}
+                            <tr>
+                                <th>#</th>
+                                {filterData('projects').some(data => data.links) && <th>Link</th>}
+                                <th>RegNo.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {/* Map over the array of objects to create table rows */}
+                            {filterData('projects').map((data, index) => {
+                                return (
+                                    <tr key={index}>
+                                        <td>{index + 1}</td>
+                                        {data.links && <td>{data.links}</td>}
+                                        <td>{data.regNos}</td>                                      
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </Table>
+                </div>
+            )}
             </Container>
         </div>
     )

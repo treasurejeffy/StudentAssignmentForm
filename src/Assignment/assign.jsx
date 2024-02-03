@@ -17,8 +17,12 @@ export default function Assignment() {
     const [js_CW, setJs_CW] = useState('');
     const [js_HW, setJs_HW] = useState('');
     const [projects, setProjects] = useState('');
-    const [links, setLinks] = useState('');
+    const [links, setLinks] = useState  ('');
     const [link, setLink] = useState('');
+
+    // course_assessment/assessmentWKDay
+    const [course_assessment, setCourse_assessment] = useState([])
+    const [assessmentWkDay, setAssessmentWKDay] = useState([])
     const [assignImg, setAssignImg] = useState('https://www.jotform.com/uploads/waltermiller/form_files/Untitled%20design%20-%202022-04-21T113911.850.626118700256a5.78403891.png');
     const [done, setDone] = useState('https://www.freeiconspng.com/thumbs/check-mark-png/green-check-mark-2-icon-17.png');
     let notify;
@@ -41,17 +45,17 @@ export default function Assignment() {
         classwork= [html_css_HW, js_HW]
         saveData = { regNos, ...(links ? { links } : { link }), classwork, Homework, projects };
         let updateJsonFile = [...jsonAssign, saveData];
-
-        // Setting a value in sessionStorage
-        sessionStorage.setItem('key', JSON.stringify(updateJsonFile));
-        // Update state variables
-        setJsonAssign(updateJsonFile);
         setAssignImg(done);
         // Display a toast notification for successful submission
         notify = toast("Successful Submission!");
     }
     
-    console.log(jsonAssign);
+    // Send data to the backend
+
+    const sendData = (regNos, course_assessment, assessmentWkDay, assessmentlink)=>{
+        
+    }
+
 
     return (
         <section className={`${AssFormmCss.formSection}`} >

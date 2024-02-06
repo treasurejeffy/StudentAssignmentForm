@@ -40,8 +40,15 @@ export default function Assignment() {
     // Form submission handler
     const handleSubmit = (e, saveData) => {
         e.preventDefault();
-        const currentTime = new Date().toLocaleTimeString();
-        setClickTime(currentTime);
+        const currentDate = new Date();
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth() + 1; // Months are zero-indexed
+        const day = currentDate.getDate();
+        const hours = currentDate.getHours();
+        const minutes = currentDate.getMinutes();
+        const seconds = currentDate.getSeconds();
+        const dateTimeString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        setClickTime(dateTimeString);
 
         // Check if any of the required fields is not filled
         if (!regNos || !((links && !link) || (!links && link))  || (!html_css_HW && !html_css_CW && !js_CW && !js_HW && !projects)) {
@@ -53,7 +60,7 @@ export default function Assignment() {
         Homework = [ html_css_CW, js_CW];
         classwork= [html_css_HW, js_HW]
        
-        saveData = { regNos, ...(links ? { links } : { link }), course_assessment, assessmentWkDay, currentTime};
+        saveData = { regNos, ...(links ? { links } : { link }), course_assessment, assessmentWkDay, dateTimeString};
         let updateJsonFile = [...jsonAssign, saveData];
 
         // Setting a value in sessionStorage

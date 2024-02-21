@@ -19,10 +19,11 @@ export default function Assignment() {
     const [projects, setProjects] = useState('');
     const [links, setLinks] = useState  ('');
     const [link, setLink] = useState('');
+    const [clickTime, setClickTime] = useState(null);
 
     // course_assessment/assessmentWKDay
-    const [course_assessment, setCourse_assessment] = useState([])
-    const [assessmentWkDay, setAssessmentWKDay] = useState([])
+    const [course_assessment, setCourse_assessment] = useState('')
+    const [assessmentWkDay, setAssessmentWKDay] = useState('')
     const [assignImg, setAssignImg] = useState('https://www.jotform.com/uploads/waltermiller/form_files/Untitled%20design%20-%202022-04-21T113911.850.626118700256a5.78403891.png');
     const [done, setDone] = useState('https://www.freeiconspng.com/thumbs/check-mark-png/green-check-mark-2-icon-17.png');
     let notify;
@@ -39,6 +40,15 @@ export default function Assignment() {
     // Form submission handler
     const handleSubmit = (e, saveData) => {
         e.preventDefault();
+        const currentDate = new Date();
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth() + 1; // Months are zero-indexed
+        const day = currentDate.getDate();
+        const hours = currentDate.getHours();
+        const minutes = currentDate.getMinutes();
+        const seconds = currentDate.getSeconds();
+        const dateTimeString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        setClickTime(dateTimeString);
 
         // Check if any of the required fields is not filled
         if (!regNos || !((links && !link) || (!links && link))  || (!html_css_HW && !html_css_CW && !js_CW && !js_HW && !projects)) {
@@ -49,9 +59,9 @@ export default function Assignment() {
 
         Homework = [ html_css_CW, js_CW];
         classwork= [html_css_HW, js_HW]
-        saveData = { regNos, ...(links ? { links } : { link }), classwork, Homework, projects };
-        console.log(regno, course_assessment, assessmentWkDay, assessmentlink);
-        // let updateJsonFile = [...jsonAssign, saveData];
+       
+        saveData = { regNos, ...(links ? { links } : { link }), course_assessment, assessmentWkDay, dateTimeString};
+        let updateJsonFile = [...jsonAssign, saveData];
 
         // // Setting a value in sessionStorage
         // sessionStorage.setItem('key', JSON.stringify(updateJsonFile));
@@ -63,6 +73,7 @@ export default function Assignment() {
     }
     
     console.log(jsonAssign);
+    console.log(course_assessment);
 
     return (
         <section className={`${AssFormmCss.formSection}`} >
@@ -89,7 +100,7 @@ export default function Assignment() {
                                 controlId="floatingSelectGrid"
                                 label="HTML/CSS Classwork"
                             >
-                                <Form.Select aria-label="Floating label select example" value={html_css_CW} onChange={(e) => { setHtml_css_CW(e.target.value); setJs_CW(''); setJs_HW(''); setHtml_css_HW(''); setProjects(''); }} >
+                                <Form.Select aria-label="Floating label select example" value={html_css_CW} onChange={(e) => { setCourse_assessment('HTML/CSS Classwork'); setAssessmentWKDay(e.target.value); setJs_CW(''); setJs_HW(''); setHtml_css_HW(''); setProjects(''); setHtml_css_CW(e.target.value) }} >
                                     <option>Open to choose topic</option>
                                     <option value="One">One</option>
                                     <option value="Two">Two</option>
@@ -102,7 +113,7 @@ export default function Assignment() {
                                 controlId="floatingSelectGrid"
                                 label="HTML/CSS Homework"
                             >
-                                <Form.Select aria-label="Floating label select example" value={html_css_HW} onChange={(e) => { setHtml_css_HW(e.target.value); setHtml_css_CW(''); setJs_CW(''); setJs_HW(''); setProjects(''); }} >
+                                <Form.Select aria-label="Floating label select example" value={html_css_HW} onChange={(e) => { setCourse_assessment('HTML/CSS Homework'); setAssessmentWKDay(e.target.value); setHtml_css_CW(''); setJs_CW(''); setJs_HW(''); setProjects(''); setHtml_css_HW(e.target.value) }} >
                                     <option>Open to choose topic</option>
                                     <option value="One">One</option>
                                     <option value="Two">Two</option>
@@ -115,7 +126,7 @@ export default function Assignment() {
                                 controlId="floatingSelectGrid"
                                 label="JS Classwork"
                             >
-                                <Form.Select aria-label="Floating label select example" value={js_CW} onChange={(e) => { setJs_CW(e.target.value); setHtml_css_HW(''); setHtml_css_CW(''); setJs_HW(''); setProjects(''); }} required={true}>
+                                <Form.Select aria-label="Floating label select example" value={js_CW} onChange={(e) => { setCourse_assessment('JavaScript Classwork'); setAssessmentWKDay(e.target.value); setHtml_css_HW(''); setHtml_css_CW(''); setJs_HW(''); setProjects(''); setJs_CW(e.target.value) }} required={true}>
                                     <option>Open to choose topic</option>
                                     <option value="One">One</option>
                                     <option value="Two">Two</option>
@@ -128,7 +139,7 @@ export default function Assignment() {
                                 controlId="floatingSelectGrid"
                                 label="JS Homework"
                             >
-                                <Form.Select aria-label="Floating label select example" value={js_HW} onChange={(e) => { setJs_HW(e.target.value); setHtml_css_CW(''); setHtml_css_HW(''); setJs_CW('');  setProjects(''); }} required={true}>
+                                <Form.Select aria-label="Floating label select example" value={js_HW} onChange={(e) => { setCourse_assessment('JavaScript Homework'); setAssessmentWKDay(e.target.value); setHtml_css_CW(''); setHtml_css_HW(''); setJs_CW('');  setProjects(''); setJs_HW(e.target.value)}} required={true}>
                                     <option>Open to choose topic</option>
                                     <option value="One">One</option>
                                     <option value="Two">Two</option>
@@ -141,7 +152,7 @@ export default function Assignment() {
                                 controlId="floatingSelectGrid"
                                 label="Projects"
                             >
-                                <Form.Select aria-label="Floating label select example" value={projects} onChange={(e) => { setProjects(e.target.value); setHtml_css_CW(''); setHtml_css_HW(''); setJs_CW(''); setJs_HW('');}}>
+                                <Form.Select aria-label="Floating label select example" value={projects} onChange={(e) => { setCourse_assessment('Project'); setAssessmentWKDay(e.target.value); setHtml_css_CW(''); setHtml_css_HW(''); setJs_CW(''); setJs_HW(''); setProjects(e.target.value)}}>
                                     <option>Open to choose</option>
                                     <option value="One">One</option>
                                     <option value="Two">Two</option>

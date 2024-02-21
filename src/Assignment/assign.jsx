@@ -50,15 +50,16 @@ export default function Assignment() {
         Homework = [ html_css_CW, js_CW];
         classwork= [html_css_HW, js_HW]
         saveData = { regNos, ...(links ? { links } : { link }), classwork, Homework, projects };
-        let updateJsonFile = [...jsonAssign, saveData];
+        console.log(regno, course_assessment, assessmentWkDay, assessmentlink);
+        // let updateJsonFile = [...jsonAssign, saveData];
 
-        // Setting a value in sessionStorage
-        sessionStorage.setItem('key', JSON.stringify(updateJsonFile));
-        // Update state variables
-        setJsonAssign(updateJsonFile);
-        setAssignImg(done);
-        // Display a toast notification for successful submission
-        notify = toast("Successful Submission!");
+        // // Setting a value in sessionStorage
+        // sessionStorage.setItem('key', JSON.stringify(updateJsonFile));
+        // // Update state variables
+        // setJsonAssign(updateJsonFile);
+        // setAssignImg(done);
+        // // Display a toast notification for successful submission
+        // notify = toast("Successful Submission!");
     }
     
     console.log(jsonAssign);

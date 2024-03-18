@@ -7,6 +7,8 @@ import { EyeFill, File,  } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
+import {db} from '../configFirebase/firebase';
+import {addDoc, collection, doc, getDoc, updateDoc, setDoc } from 'firebase/firestore'
 
 export default function Assignment() {
     // State variables
@@ -32,13 +34,10 @@ export default function Assignment() {
     let Homework;
 
     // Send data to the backend
-
-    const sendData = (regno, course_assessment, assessmentWkDay, assessmentlink)=>{
-
-    }
-
+    const dataOfSubmission = collection(db,'submission');
+   
     // Form submission handler
-    const handleSubmit = (e, saveData) => {
+    const handleSubmit =  (e, saveData) => {
         e.preventDefault();
         const currentDate = new Date();
         const year = currentDate.getFullYear();
@@ -61,18 +60,48 @@ export default function Assignment() {
         classwork= [html_css_HW, js_HW]
        
         saveData = { regNos, ...(links ? { links } : { link }), course_assessment, assessmentWkDay, dateTimeString};
-        let updateJsonFile = [...jsonAssign, saveData];
-
-        // // Setting a value in sessionStorage
-        // sessionStorage.setItem('key', JSON.stringify(updateJsonFile));
-        // // Update state variables
-        // setJsonAssign(updateJsonFile);
-        // setAssignImg(done);
-        // // Display a toast notification for successful submission
-        // notify = toast("Successful Submission!");
+        console.log(saveData);
+        setAssignImg(done);
+        // Display a toast notification for successful submission
+        notify = toast("Successful Submission!");
+        sendData()
     }
     
-    console.log(jsonAssign);
+     // Setting update/add in firebase
+     const sendData = async () => {
+        try {
+            const assessmentLink = links ? links : link;
+    
+            // Create a reference to the document with ID regNos in the "submission" collection
+            const submissionRef = doc(db, 'submission', regNos);
+    
+            const sanitizedCourseAssessment = course_assessment.replace(/[\~\*\[\]\/]/g, '');
+
+            // Check if the document exists
+            const submissionSnapshot = await getDoc(submissionRef);
+    
+            // Data to be set for the document
+            const newData = {
+                [sanitizedCourseAssessment]: [{
+                    [assessmentWkDay]: assessmentLink,
+                    submitted: clickTime
+                }]
+            };
+            
+    
+            if (submissionSnapshot.exists()) {
+                // Document exists, update it
+                await updateDoc(submissionRef, newData);
+                console.log("Document updated successfully!");
+            } else {
+                // Document doesn't exist, add it
+                await setDoc(submissionRef, newData);
+                console.log("New document added successfully!");
+            }
+        } catch (error) {
+            console.error("Error updating/adding document:", error);
+        }
+    };
     console.log(course_assessment);
 
     return (

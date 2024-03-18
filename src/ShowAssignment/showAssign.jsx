@@ -1,149 +1,113 @@
-import React, { useState, useEffect } from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Container, Form, Row, Col, Table } from "react-bootstrap";
-import { Markdown, WindowDash } from "react-bootstrap-icons";
-import ShowAssignmentsCss from './showassignment.module.css'
-import unpassed from './icons8-question-mark-48.png'
+import React, { useState, useEffect } from 'react';
+import { doc, getDoc, getDocs, setDoc, updateDoc, collection } from 'firebase/firestore';
+import { db } from '../configFirebase/firebase'; // Import your Firebase configuration
+import { Table } from 'react-bootstrap'; // Import Table component from react-bootstrap or any other library you're using
 
-// ... (your imports)
+const YourComponent = () => {
+    const [filteredDatas, setFilteredDatas] = useState([]);
 
-export default function ShowAssignments() {
-    // State to store data retrieved from sessionStorage
-    const [sessionStorageItems, setSessionStorageItems] = useState([]);
-
-    // useEffect to run once on component mount
     useEffect(() => {
-        // Retrieve items from sessionStorage
-        const storedData = sessionStorage.getItem('key');
-
-        //  Parse JSON to set it to state
-        if (storedData) {
-            const parsedData = JSON.parse(storedData);
-            // Set items to state
-            setSessionStorageItems(parsedData);
-        }
+        getDatas();
     }, []);
+    
+    const SavedDatas = collection(db,  'submission');
 
-    // Remove the first object from the array (index 0)
-    let newArrayOfObjects = sessionStorageItems.slice(1);
+    const getDatas = async () => {
+        try {
+            const querySnapshot = await getDocs(SavedDatas);
+            const dataArray = querySnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+            setFilteredDatas(dataArray)
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+    console.log(filteredDatas)
 
-    console.log(newArrayOfObjects);
-
-    // Function to filter data based on the type (classWork or homeWork)
-    const filterData = (type) => {
-        return newArrayOfObjects.filter(data => data[type] && data[type].length > 0);
+    const renderTables = () => {
+        let prevName = null;
+        let currentTable = null;
+        const tables = [];
+    
+        filteredDatas.forEach((item) => {
+            const name = Object.keys(item)[0];
+            const data = item[name];
+            
+            if (name === prevName) {
+                // If the name is the same as the previous one, append to the current table
+                currentTable.push(
+                    <tr key={item.id}>
+                        <td>{item.id}</td>
+                        <td>{data.assessmentWkDay}</td>
+                        <td>{data.assessmentLink}</td>
+                        <td>{data.submitted}</td>
+                    </tr>
+                );
+            } else {
+                // If the name is different, start a new table
+                if (currentTable) {
+                    // Push the previous table to the tables array if it exists
+                    tables.push(
+                        <div key={prevName}>
+                            <h2>{prevName}</h2>
+                            <Table striped bordered hover>
+                                <thead>
+                                    <tr>
+                                        <th>Reg No.</th>
+                                        <th>AssessmentWKDAY</th>
+                                        <th>AssessmentLink</th>
+                                        <th>SubmittedTime</th>
+                                    </tr>
+                                </thead>
+                                <tbody>{currentTable}</tbody>
+                            </Table>
+                        </div>
+                    );
+                }
+                // Start a new table
+                prevName = name;
+                currentTable = [
+                    <tr key={item.id}>
+                        <td>{item.id}</td>
+                        <td>{data.assessmentWkDay}</td>
+                        <td>{data.assessmentLink}</td>
+                        <td>{data.submitted}</td>
+                    </tr>
+                ];
+            }
+        });
+    
+        // Push the last table to the tables array
+        if (currentTable) {
+            tables.push(
+                <div key={prevName}>
+                    <h2>{prevName}</h2>
+                    <Table striped bordered hover>
+                        <thead>
+                            <tr>
+                                <th>Reg No.</th>
+                                <th>AssessmentWKDAY</th>
+                                <th>AssessmentLink</th>
+                                <th>SubmittedTime</th>
+                            </tr>
+                        </thead>
+                        <tbody>{currentTable}</tbody>
+                    </Table>
+                </div>
+            );
+        }
+    
+        return tables;
     };
     
-
+    
     return (
         <div>
-            <Container>
-                <h1 className="text-center mt-5">Continous Assessment Details</h1>
-                {/* Render the Classwork Table */}
-                {filterData('classwork').length > 0 && (
-                <div className="table-responsive mt-5">
-                    <span>Classwork</span>
-                    <Table striped bordered hover className={`${ShowAssignmentsCss.table}`}>
-                        {/* Table header */}
-                        <thead>
-                            {/* ... (your header rows) */}
-                            <tr>
-                                <th>#</th>
-                                {filterData('classwork').some(data => data.links) && <th>Link</th>}
-                                <th>RegNo.</th>
-                                <th>HTML/CSS</th>
-                                <th>JAVASCRIPT</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {/* Map over the array of objects to create table rows */}
-                            {filterData('classwork').map((data, index) => {
-                                return (
-                                    <tr key={index}>
-                                        <td>{index + 1}</td>
-                                        {data.links && <td>{data.links}</td>}
-                                        <td>{data.regNos}</td>
-                                        {data.classwork.map((topic, topicIndex) => (
-                                            <td key={topicIndex} className="text-center">
-                                                {topicIndex < 3 ? ` ${topic || 'empty'}` : ` ${topic || 'empty'}`}
-                                            </td>
-                                        ))}
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </Table>
-                </div>
-            )}
-
-            {/* Render the Homework Table */}
-            {filterData('Homework').length > 0 && (
-                <div className="table-responsive mt-5">
-                    <span>Homework</span>
-                    <Table striped bordered hover className={`${ShowAssignmentsCss.table}`}>
-                        {/* Table header */}
-                        <thead>
-                            {/* ... (your header rows) */}
-                            <tr>
-                                <th>#</th>
-                                {filterData('Homework').some(data => data.links) && <th>Link</th>}
-                                <th>RegNo.</th>
-                                <th>HTML/CSS</th>
-                                <th>JAVASCRIPT</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {/* Map over the array of objects to create table rows */}
-                            {filterData('Homework').map((data, index) => {
-                                return (
-                                    <tr key={index}>
-                                        <td>{index + 1}</td>
-                                        {data.links && <td>{data.links}</td>}
-                                        <td>{data.regNos}</td>
-                                        {data.Homework.map((topic, topicIndex) => (
-                                            <td key={topicIndex} className="text-center">
-                                                {topicIndex < 3 ? ` ${topic || 'empty'}` : ` ${topic || 'empty'}`}
-                                            </td>
-                                        ))}
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </Table>
-                </div>
-            )}
-
-             {/* Render the Homework Table */}
-            {filterData('projects').length > 0 && (
-                <div className="table-responsive mt-5">
-                    <span>projects</span>
-                    <Table striped bordered hover className={`${ShowAssignmentsCss.table}`}>
-                        {/* Table header */}
-                        <thead>
-                            {/* ... (your header rows) */}
-                            <tr>
-                                <th>#</th>
-                                {filterData('projects').some(data => data.links) && <th>Link</th>}
-                                <th>RegNo.</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {/* Map over the array of objects to create table rows */}
-                            {filterData('projects').map((data, index) => {
-                                return (
-                                    <tr key={index}>
-                                        <td>{index + 1}</td>
-                                        {data.links && <td>{data.links}</td>}
-                                        <td>{data.regNos}</td>                                      
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </Table>
-                </div>
-            )}
-            </Container>
+            {renderTables()}
         </div>
-    )
-}
+    );
+};
 
+export default YourComponent;

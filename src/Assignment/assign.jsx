@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Container, Form, Row, Col, InputGroup,FloatingLabel, NavLink} from "react-bootstrap";
-import Json from './assignment.json'
 import AssFormmCss from './assign.module.css'
 import { EyeFill, File,  } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
@@ -12,7 +11,6 @@ import {addDoc, collection, doc, getDoc, updateDoc, setDoc } from 'firebase/fire
 
 export default function Assignment() {
     // State variables
-    const [jsonAssign, setJsonAssign] = useState(Json);
     const [regNos, setRegNos] = useState();
     const [html_css_CW, setHtml_css_CW] = useState('');
     const [html_css_HW, setHtml_css_HW] = useState('');
@@ -22,6 +20,14 @@ export default function Assignment() {
     const [links, setLinks] = useState  ('');
     const [link, setLink] = useState('');
     const [clickTime, setClickTime] = useState(null);
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth() + 1; // Months are zero-indexed
+    const day = currentDate.getDate();
+    const hours = currentDate.getHours();
+    const minutes = currentDate.getMinutes();
+    const seconds = currentDate.getSeconds();
+    const dateTimeString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 
     // course_assessment/assessmentWKDay
     const [course_assessment, setCourse_assessment] = useState('')
@@ -38,15 +44,7 @@ export default function Assignment() {
    
     // Form submission handler
     const handleSubmit =  (e, saveData) => {
-        e.preventDefault();
-        const currentDate = new Date();
-        const year = currentDate.getFullYear();
-        const month = currentDate.getMonth() + 1; // Months are zero-indexed
-        const day = currentDate.getDate();
-        const hours = currentDate.getHours();
-        const minutes = currentDate.getMinutes();
-        const seconds = currentDate.getSeconds();
-        const dateTimeString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        e.preventDefault();      
         setClickTime(dateTimeString);
 
         // Check if any of the required fields is not filled
@@ -61,15 +59,14 @@ export default function Assignment() {
        
         saveData = { regNos, ...(links ? { links } : { link }), course_assessment, assessmentWkDay, dateTimeString};
         console.log(saveData);
-        setAssignImg(done);
-        // Display a toast notification for successful submission
-        notify = toast("Successful Submission!");
         sendData()
     }
     
      // Setting update/add in firebase
      const sendData = async () => {
         try {
+            setClickTime(dateTimeString);
+
             const assessmentLink = links ? links : link;
     
             // Create a reference to the document with ID regNos in the "submission" collection
@@ -83,8 +80,9 @@ export default function Assignment() {
             // Data to be set for the document
             const newData = {
                 [sanitizedCourseAssessment]: [{
-                    [assessmentWkDay]: assessmentLink,
-                    submitted: clickTime
+                    Name: assessmentWkDay,
+                    Link: assessmentLink,
+                    submittedTime:dateTimeString
                 }]
             };
             
@@ -98,6 +96,9 @@ export default function Assignment() {
                 await setDoc(submissionRef, newData);
                 console.log("New document added successfully!");
             }
+            setAssignImg(done);
+            // Display a toast notification for successful submission
+            notify = toast("Successful Submission!");
         } catch (error) {
             console.error("Error updating/adding document:", error);
         }
@@ -129,11 +130,15 @@ export default function Assignment() {
                                 controlId="floatingSelectGrid"
                                 label="HTML/CSS Classwork"
                             >
-                                <Form.Select aria-label="Floating label select example" value={html_css_CW} onChange={(e) => { setCourse_assessment('HTML/CSS Classwork'); setAssessmentWKDay(e.target.value); setJs_CW(''); setJs_HW(''); setHtml_css_HW(''); setProjects(''); setHtml_css_CW(e.target.value) }} >
+                                <Form.Select aria-label="Floating label select example" value={html_css_CW} onChange={(e) => { setCourse_assessment('HTML_CSS_Classwork'); setAssessmentWKDay(e.target.value); setJs_CW(''); setJs_HW(''); setHtml_css_HW(''); setProjects(''); setHtml_css_CW(e.target.value) }} >
                                     <option>Open to choose topic</option>
-                                    <option value="One">One</option>
-                                    <option value="Two">Two</option>
-                                    <option value="Three">Three</option>
+                                    <option value="WK1D1">WK1D1</option>
+                                    <option value="WK1D2">WK1D2</option>
+                                    <option value="WK2D1">WK2D1</option>
+                                    <option value="WK2D2">WK1D2</option>
+                                    <option value="WK3D1">WK3D1</option>
+                                    <option value="WK3D2">WK3D2</option>
+
                                 </Form.Select>
                             </FloatingLabel>
                         </Col>
@@ -142,11 +147,14 @@ export default function Assignment() {
                                 controlId="floatingSelectGrid"
                                 label="HTML/CSS Homework"
                             >
-                                <Form.Select aria-label="Floating label select example" value={html_css_HW} onChange={(e) => { setCourse_assessment('HTML/CSS Homework'); setAssessmentWKDay(e.target.value); setHtml_css_CW(''); setJs_CW(''); setJs_HW(''); setProjects(''); setHtml_css_HW(e.target.value) }} >
-                                    <option>Open to choose topic</option>
-                                    <option value="One">One</option>
-                                    <option value="Two">Two</option>
-                                    <option value="Three">Three</option>
+                                <Form.Select aria-label="Floating label select example" value={html_css_HW} onChange={(e) => { setCourse_assessment('HTML_CSS_Homework'); setAssessmentWKDay(e.target.value); setHtml_css_CW(''); setJs_CW(''); setJs_HW(''); setProjects(''); setHtml_css_HW(e.target.value) }} >
+                                <option>Open to choose topic</option>
+                                    <option value="WK1D1">WK1D1</option>
+                                    <option value="WK1D2">WK1D2</option>
+                                    <option value="WK2D1">WK2D1</option>
+                                    <option value="WK2D2">WK1D2</option>
+                                    <option value="WK3D1">WK3D1</option>
+                                    <option value="WK3D2">WK3D2</option>
                                 </Form.Select>
                             </FloatingLabel>
                         </Col>
@@ -155,11 +163,14 @@ export default function Assignment() {
                                 controlId="floatingSelectGrid"
                                 label="JS Classwork"
                             >
-                                <Form.Select aria-label="Floating label select example" value={js_CW} onChange={(e) => { setCourse_assessment('JavaScript Classwork'); setAssessmentWKDay(e.target.value); setHtml_css_HW(''); setHtml_css_CW(''); setJs_HW(''); setProjects(''); setJs_CW(e.target.value) }} required={true}>
+                                <Form.Select aria-label="Floating label select example" value={js_CW} onChange={(e) => { setCourse_assessment('JavaScript_Classwork'); setAssessmentWKDay(e.target.value); setHtml_css_HW(''); setHtml_css_CW(''); setJs_HW(''); setProjects(''); setJs_CW(e.target.value) }} required={true}>
                                     <option>Open to choose topic</option>
-                                    <option value="One">One</option>
-                                    <option value="Two">Two</option>
-                                    <option value="Three">Three</option>
+                                    <option value="WK1D1">WK1D1</option>
+                                    <option value="WK1D2">WK1D2</option>
+                                    <option value="WK2D1">WK2D1</option>
+                                    <option value="WK2D2">WK1D2</option>
+                                    <option value="WK3D1">WK3D1</option>
+                                    <option value="WK3D2">WK3D2</option>
                                 </Form.Select>
                             </FloatingLabel>
                         </Col>
@@ -168,11 +179,14 @@ export default function Assignment() {
                                 controlId="floatingSelectGrid"
                                 label="JS Homework"
                             >
-                                <Form.Select aria-label="Floating label select example" value={js_HW} onChange={(e) => { setCourse_assessment('JavaScript Homework'); setAssessmentWKDay(e.target.value); setHtml_css_CW(''); setHtml_css_HW(''); setJs_CW('');  setProjects(''); setJs_HW(e.target.value)}} required={true}>
+                                <Form.Select aria-label="Floating label select example" value={js_HW} onChange={(e) => { setCourse_assessment('JavaScript_Homework'); setAssessmentWKDay(e.target.value); setHtml_css_CW(''); setHtml_css_HW(''); setJs_CW('');  setProjects(''); setJs_HW(e.target.value)}} required={true}>
                                     <option>Open to choose topic</option>
-                                    <option value="One">One</option>
-                                    <option value="Two">Two</option>
-                                    <option value="Three">Three</option>
+                                    <option value="WK1D1">WK1D1</option>
+                                    <option value="WK1D2">WK1D2</option>
+                                    <option value="WK2D1">WK2D1</option>
+                                    <option value="WK2D2">WK1D2</option>
+                                    <option value="WK3D1">WK3D1</option>
+                                    <option value="WK3D2">WK3D2</option>
                                 </Form.Select>
                             </FloatingLabel>
                         </Col>
@@ -183,9 +197,9 @@ export default function Assignment() {
                             >
                                 <Form.Select aria-label="Floating label select example" value={projects} onChange={(e) => { setCourse_assessment('Project'); setAssessmentWKDay(e.target.value); setHtml_css_CW(''); setHtml_css_HW(''); setJs_CW(''); setJs_HW(''); setProjects(e.target.value)}}>
                                     <option>Open to choose</option>
-                                    <option value="One">One</option>
-                                    <option value="Two">Two</option>
-                                    <option value="Three">Three</option>
+                                    <option value="CapStone_Project">CapStone_Project</option>
+                                    <option value="Middele_Project">Middele_Project</option>
+                                    <option value="Final_Project">Final_Project</option>
                                 </Form.Select>
                             </FloatingLabel>
                         </Col>

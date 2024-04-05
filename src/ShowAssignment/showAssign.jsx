@@ -7,6 +7,7 @@ const YourComponent = () => {
     const [filteredDatas, setFilteredDatas] = useState([]);
     const [spinner, setSpinner] = useState(true);
     const tablewkDay = ['WK1D1', 'WK1D2', 'WK2D1', 'WK2D2', 'WK3D1', 'WK3D2', 'WK4D1', 'WK4D2', 'WK5D1', 'WK5D2', 'WK6D1', 'WK6D2'];
+    const projectName = ['Clipboard', 'Newspage', 'Loopstudios', 'Chirp', 'Portfolio', 'RAD5_Landing_Page', 'HTML/CSS_Capstone'];
 
     useEffect(() => {
         getDatas();
@@ -73,50 +74,81 @@ const YourComponent = () => {
         Object.entries(assessmentTables).forEach(([assessmentType, { idColumn, rows }]) => {
             const table = (
                 <div key={assessmentType} className='table-responsive my-4'>
-                    <Table striped bordered hover>
+                    <Table striped bordered hover className='my-5'>
+                        <caption>{assessmentType}</caption>
                         <thead>
                             <tr>
-                                <th rowSpan={3}>Reg No.</th>
-                                <th colSpan={tablewkDay.length * 2} className='text-center'>{assessmentType}</th>
+                                <th>Reg No.</th>
+                                {assessmentType === 'Project' ? (
+                                    projectName.map((listingName, index) => (
+                                        <React.Fragment key={index}>
+                                            <th className='text-center' colSpan={2}>{listingName}</th>
+                                        </React.Fragment>
+                                    ))
+                                ) : (
+                                    tablewkDay.map((listingName, index) => (
+                                        <React.Fragment key={index}>
+                                            <th className='text-center' colSpan={2}>{listingName}</th>
+                                        </React.Fragment>
+                                    ))
+                                )}
                             </tr>
                             <tr>
-                                {tablewkDay.map((listingName, index) => (
-                                    <React.Fragment key={index}>
-                                        <th colSpan={2} className='text-center'>{listingName}</th>
-                                    </React.Fragment>
-                                ))}
-                            </tr>
-                            <tr>
-                                {tablewkDay.map((listingName, index) => (
-                                    <React.Fragment key={index}>
-                                        <th className='text-primary'>Links</th>
-                                        <th className='text-success'>Submitted</th>
-                                    </React.Fragment>
-                                ))}
+                                {assessmentType === 'Project' ? (
+                                    projectName.map((listingName, index) => (
+                                        <React.Fragment key={index}>
+                                            <th className='text-primary'>Links</th>
+                                            <th className='text-success'>Submitted</th>
+                                        </React.Fragment>
+                                    ))
+                                ) : (
+                                    tablewkDay.map((listingName, index) => (
+                                        <React.Fragment key={index}>
+                                            <th className='text-primary'>Links</th>
+                                            <th className='text-success'>Submitted</th>
+                                        </React.Fragment>
+                                    ))
+                                )}
                             </tr>
                         </thead>
                         <tbody>
                             {idColumn.map((id, rowIndex) => (
                                 <tr key={rowIndex}>
                                     <td>{id}</td>
-                                    {tablewkDay.map((listingName, colIndex) => (
-                                        <React.Fragment key={colIndex}>
-                                            <td>
-                                                {rows[listingName] && rows[listingName].links[rowIndex] && (
-                                                    <a href={rows[listingName].links[rowIndex]}>{rows[listingName].links[rowIndex]}</a>
-                                                )}
-                                            </td>
-                                            <td>
-                                                {rows[listingName] && rows[listingName].submittedTime[rowIndex] && (
-                                                    rows[listingName].submittedTime[rowIndex]
-                                                )}
-                                            </td>
-                                        </React.Fragment>
-                                    ))}
+                                    {assessmentType === 'Project' ? (
+                                        projectName.map((project, projectIndex) => (
+                                            <React.Fragment key={projectIndex}>
+                                                <td>
+                                                    {rows[project] && rows[project].links[rowIndex] && (
+                                                        <a href={rows[project].links[rowIndex]}>{rows[project].links[rowIndex]}</a>
+                                                    )}
+                                                </td>
+                                                <td>
+                                                    {rows[project] && rows[project].submittedTime[rowIndex] && (
+                                                        rows[project].submittedTime[rowIndex]
+                                                    )}
+                                                </td>
+                                            </React.Fragment>
+                                        ))
+                                    ) : (
+                                        tablewkDay.map((listingName, colIndex) => (
+                                            <React.Fragment key={colIndex}>
+                                                <td>
+                                                    {rows[listingName] && rows[listingName].links[rowIndex] && (
+                                                        <a href={rows[listingName].links[rowIndex]}>{rows[listingName].links[rowIndex]}</a>
+                                                    )}
+                                                </td>
+                                                <td>
+                                                    {rows[listingName] && rows[listingName].submittedTime[rowIndex] && (
+                                                        rows[listingName].submittedTime[rowIndex]
+                                                    )}
+                                                </td>
+                                            </React.Fragment>
+                                        ))
+                                    )}
                                 </tr>
                             ))}
                         </tbody>
-                        
                     </Table>
                 </div>
             );
@@ -126,6 +158,7 @@ const YourComponent = () => {
 
         return tables;
     };
+
 
     return (
         <Container>

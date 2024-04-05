@@ -196,10 +196,14 @@ export default function Assignment() {
                                 label="Projects"
                             >
                                 <Form.Select aria-label="Floating label select example" value={projects} onChange={(e) => { setCourse_assessment('Project'); setAssessmentWKDay(e.target.value); setHtml_css_CW(''); setHtml_css_HW(''); setJs_CW(''); setJs_HW(''); setProjects(e.target.value)}}>
-                                    <option>Open to choose</option>
-                                    <option value="CapStone_Project">CapStone_Project</option>
-                                    <option value="Middele_Project">Middele_Project</option>
-                                    <option value="Final_Project">Final_Project</option>
+                                    <option>Open to choose</option>                                
+                                    <option value="Clipboard">Clipboard</option>
+                                    <option value="Newspage">Newspage</option>
+                                    <option value="Loopstudios">Loopstudios</option>
+                                    <option value="Chirp">Chirp</option>
+                                    <option value="Portfolio">Portfolio</option>
+                                    <option value="RAD5_Landing_Page">RAD5_Landing_Page</option>
+                                    <option value="HTML/CSS_Capstone">HTML/CSS_Capstone</option>
                                 </Form.Select>
                             </FloatingLabel>
                         </Col>

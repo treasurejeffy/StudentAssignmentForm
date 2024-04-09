@@ -66,11 +66,11 @@ const YourComponent = () => {
         return assessmentTables;
     };
 
-    // Render the tables
+   // Render the tables
     const renderTables = () => {
         const assessmentTables = createAssessmentTables();
         const tables = [];
-
+        console.log(assessmentTables);
         Object.entries(assessmentTables).forEach(([assessmentType, { idColumn, rows }]) => {
             const table = (
                 <div key={assessmentType} className='table-responsive my-4'>
@@ -78,7 +78,7 @@ const YourComponent = () => {
                         <caption>{assessmentType}</caption>
                         <thead>
                             <tr>
-                                <th>Reg No.</th>
+                                <th rowSpan={2}>Reg No.</th>
                                 {assessmentType === 'Project' ? (
                                     projectName.map((listingName, index) => (
                                         <React.Fragment key={index}>
@@ -112,43 +112,21 @@ const YourComponent = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {idColumn.map((id, rowIndex) => (
-                                <tr key={rowIndex}>
-                                    <td>{id}</td>
-                                    {assessmentType === 'Project' ? (
-                                        projectName.map((project, projectIndex) => (
-                                            <React.Fragment key={projectIndex}>
-                                                <td>
-                                                    {rows[project] && rows[project].links[rowIndex] && (
-                                                        <a href={rows[project].links[rowIndex]}>{rows[project].links[rowIndex]}</a>
-                                                    )}
-                                                </td>
-                                                <td>
-                                                    {rows[project] && rows[project].submittedTime[rowIndex] && (
-                                                        rows[project].submittedTime[rowIndex]
-                                                    )}
-                                                </td>
-                                            </React.Fragment>
-                                        ))
-                                    ) : (
-                                        tablewkDay.map((listingName, colIndex) => (
-                                            <React.Fragment key={colIndex}>
-                                                <td>
-                                                    {rows[listingName] && rows[listingName].links[rowIndex] && (
-                                                        <a href={rows[listingName].links[rowIndex]}>{rows[listingName].links[rowIndex]}</a>
-                                                    )}
-                                                </td>
-                                                <td>
-                                                    {rows[listingName] && rows[listingName].submittedTime[rowIndex] && (
-                                                        rows[listingName].submittedTime[rowIndex]
-                                                    )}
-                                                </td>
-                                            </React.Fragment>
-                                        ))
-                                    )}
+                            {Object.entries(rows).map(([wkDay, rowData], index) => (                                
+                                <tr key={index}>
+                                    <td>{idColumn[index]}</td> {/* Render ID from idColumn */}
+                                    {/* Render link */}
+                                    <td>
+                                        {rowData.links[0] && (
+                                            <a href={rowData.links[0]}>{rowData.links[0]}</a>
+                                        )}
+                                    </td>
+                                    {/* Render submitted time */}
+                                    <td>{rowData.submittedTime[0]}</td>
                                 </tr>
                             ))}
                         </tbody>
+
                     </Table>
                 </div>
             );
@@ -158,6 +136,7 @@ const YourComponent = () => {
 
         return tables;
     };
+
 
 
     return (

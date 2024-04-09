@@ -131,7 +131,7 @@ export default function Assignment() {
                                 label="HTML/CSS Classwork"
                             >
                                 <Form.Select aria-label="Floating label select example" value={html_css_CW} onChange={(e) => { setCourse_assessment('HTML_CSS_Classwork'); setAssessmentWKDay(e.target.value); setJs_CW(''); setJs_HW(''); setHtml_css_HW(''); setProjects(''); setHtml_css_CW(e.target.value) }} >
-                                    <option>Open to choose topic</option>
+                                    <option>Open to choose WKDay</option>
                                     <option value="WK1D1">WK1D1</option>
                                     <option value="WK1D2">WK1D2</option>
                                     <option value="WK2D1">WK2D1</option>
@@ -148,7 +148,7 @@ export default function Assignment() {
                                 label="HTML/CSS Homework"
                             >
                                 <Form.Select aria-label="Floating label select example" value={html_css_HW} onChange={(e) => { setCourse_assessment('HTML_CSS_Homework'); setAssessmentWKDay(e.target.value); setHtml_css_CW(''); setJs_CW(''); setJs_HW(''); setProjects(''); setHtml_css_HW(e.target.value) }} >
-                                <option>Open to choose topic</option>
+                                <option>Open to choose WKDay</option>
                                     <option value="WK1D1">WK1D1</option>
                                     <option value="WK1D2">WK1D2</option>
                                     <option value="WK2D1">WK2D1</option>
@@ -164,7 +164,7 @@ export default function Assignment() {
                                 label="JS Classwork"
                             >
                                 <Form.Select aria-label="Floating label select example" value={js_CW} onChange={(e) => { setCourse_assessment('JavaScript_Classwork'); setAssessmentWKDay(e.target.value); setHtml_css_HW(''); setHtml_css_CW(''); setJs_HW(''); setProjects(''); setJs_CW(e.target.value) }} required={true}>
-                                    <option>Open to choose topic</option>
+                                    <option>Open to choose WKDay</option>
                                     <option value="WK1D1">WK1D1</option>
                                     <option value="WK1D2">WK1D2</option>
                                     <option value="WK2D1">WK2D1</option>
@@ -180,7 +180,7 @@ export default function Assignment() {
                                 label="JS Homework"
                             >
                                 <Form.Select aria-label="Floating label select example" value={js_HW} onChange={(e) => { setCourse_assessment('JavaScript_Homework'); setAssessmentWKDay(e.target.value); setHtml_css_CW(''); setHtml_css_HW(''); setJs_CW('');  setProjects(''); setJs_HW(e.target.value)}} required={true}>
-                                    <option>Open to choose topic</option>
+                                    <option>Open to choose WKDay</option>
                                     <option value="WK1D1">WK1D1</option>
                                     <option value="WK1D2">WK1D2</option>
                                     <option value="WK2D1">WK2D1</option>
@@ -196,7 +196,7 @@ export default function Assignment() {
                                 label="Projects"
                             >
                                 <Form.Select aria-label="Floating label select example" value={projects} onChange={(e) => { setCourse_assessment('Project'); setAssessmentWKDay(e.target.value); setHtml_css_CW(''); setHtml_css_HW(''); setJs_CW(''); setJs_HW(''); setProjects(e.target.value)}}>
-                                    <option>Open to choose</option>                                
+                                    <option>Open to choose Project</option>                                
                                     <option value="Clipboard">Clipboard</option>
                                     <option value="Newspage">Newspage</option>
                                     <option value="Loopstudios">Loopstudios</option>
@@ -219,8 +219,8 @@ export default function Assignment() {
                     </Row>
                     <Row className="d-sm-block d-lg-none">
                         <Form.Group>
-                            <Form.Label>Link:</Form.Label>
-                            <Form.Control onChange={(e)=> setLink(e.target.value) }/>
+                            <Form.Label className='mt-4 px-1'>Link:</Form.Label>
+                            <Form.Control onChange={(e)=> setLink(e.target.value) } placeholder="Enter the assessment link:" />
                         </Form.Group>
                     </Row>
                     {/* Form Buttons */}
